@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Async IP & VPN Node Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="logo-icon">⚡</div>
+                <div class="brand-text">
+                    <h1>NodeChecker <span class="badge-pro">PRO</span></h1>
+                    <p class="subtitle">High-Speed Async Network & VPN Validator</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="btnOpenImport">
+                    <span class="icon">📥</span> Import / Input
+                </button>
+                <button class="btn btn-primary" id="btnStartCheck">
+                    <span class="icon">🚀</span> Run Check
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview Cards -->
+        <section class="stats-grid">
+            <div class="card stat-card total-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Monitored</div>
+                    <div class="stat-value" id="statTotal">0</div>
+                </div>
+            </div>
+            <div class="card stat-card live-card">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-info">
+                    <div class="stat-label">Active / Live</div>
+                    <div class="stat-value" id="statLive">0</div>
+                </div>
+            </div>
+            <div class="card stat-card dead-card">
+                <div class="stat-icon">🔴</div>
+                <div class="stat-info">
+                    <div class="stat-label">Offline / Dead</div>
+                    <div class="stat-value" id="statDead">0</div>
+                </div>
+            </div>
+            <div class="card stat-card speed-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-info">
+                    <div class="stat-label">Avg. Latency</div>
+                    <div class="stat-value" id="statLatency">0 ms</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Progress Banner (Active during scan) -->
+        <section class="card progress-card" id="progressSection" style="display: none;">
+            <div class="progress-header">
+                <div class="progress-status">
+                    <div class="spinner"></div>
+                    <span id="progressMessage">Checking nodes...</span>
+                </div>
+                <div class="progress-metrics">
+                    <span id="progressPercent">0%</span> • 
+                    <span id="progressCounts">0 / 0</span> • 
+                    <span id="progressTime">0.0s</span>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Filter Toolbar -->
+            <div class="card toolbar-card">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search IP, Port, ISP, Country, or Tag...">
+                </div>
+                <div class="filters-group">
+                    <select id="filterStatus" class="select-input">
+                        <option value="">Status: All</option>
+                        <option value="alive" selected>Status: Live Only (🟢)</option>
+                        <option value="dead">Status: Dead Only (🔴)</option>
+                    </select>
+
+                    <select id="filterProtocol" class="select-input">
+                        <option value="">Protocol: All</option>
+                        <option value="TCP">TCP / Socket</option>
+                        <option value="HTTP">HTTP Proxy</option>
+                        <option value="HTTPS">HTTPS Proxy</option>
+                        <option value="SOCKS5">SOCKS5</option>
+                        <option value="SOCKS4">SOCKS4</option>
+                        <option value="Shadowsocks">Shadowsocks</option>
+                        <option value="VLESS">VLESS</option>
+                        <option value="VMess">VMess</option>
+                        <option value="WireGuard">WireGuard</option>
+                    </select>
+
+                    <select id="filterLatency" class="select-input">
+                        <option value="">Latency: Any</option>
+                        <option value="150">&lt; 150ms (Ultra-Fast)</option>
+                        <option value="300">&lt; 300ms (Fast)</option>
+                        <option value="600">&lt; 600ms (Good)</option>
+                    </select>
+
+                    <div class="export-dropdown">
+                        <button class="btn btn-outline" id="btnExportMenu">
+                            <span>💾 Export</span> ▼
+                        </button>
+                        <div class="dropdown-menu" id="exportMenu">
+                            <a href="/api/export/txt" target="_blank">📄 Raw TXT (URLs / IPs)</a>
+                            <a href="/api/export/json" target="_blank">📊 Full JSON Metadata</a>
+                            <a href="/api/export/csv" target="_blank">📑 CSV Spreadsheet</a>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-danger" id="btnClearDb" title="Clear all records">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nodes Data Table -->
+            <div class="card table-card">
+                <div class="table-container">
+                    <table class="nodes-table" id="nodesTable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Protocol</th>
+                                <th>Endpoint (Host:Port)</th>
+                                <th>Latency</th>
+                                <th>Location & Flag</th>
+                                <th>ISP / Provider</th>
+                                <th>Tag / Note</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nodesTableBody">
+                            <tr class="empty-row">
+                                <td colspan="8">No nodes loaded yet. Click <strong>Run Check</strong> or <strong>Import</strong> to start scanning.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Import / Manual Input Modal -->
+        <div class="modal" id="importModal">
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="modal-content card">
+                <div class="modal-header">
+                    <h2>📥 Import Nodes / Subscriptions</h2>
+                    <button class="modal-close" id="btnCloseModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <label for="modalTextInput"><strong>Enter IP:Port, Proxy or VPN URLs (one per line):</strong></label>
+                    <textarea id="modalTextInput" rows="8" placeholder="1.1.1.1:53&#10;8.8.8.8:443&#10;http://user:pass@1.2.3.4:8080&#10;socks5://1.2.3.4:1080&#10;ss://...&#10;vless://..."></textarea>
+                    
+                    <label for="modalUrlInput" style="margin-top: 12px;"><strong>Or Subscription URL (HTTP/HTTPS):</strong></label>
+                    <input type="text" id="modalUrlInput" placeholder="https://example.com/sub/active_vless_nodes">
+
+                    <div class="checkbox-group" style="margin-top: 12px;">
+                        <label>
+                            <input type="checkbox" id="chkUseDefault" checked> Include default sources file (data/input/sources.txt)
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="btnCancelModal">Cancel</button>
+                    <button class="btn btn-primary" id="btnConfirmImport">Start Validation</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Single Quick Check Modal / Inspector -->
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

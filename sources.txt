@@ -1,0 +1,7 @@
+# ==============================================================================
+# Sources List for Async IP Checker
+# Add direct HTTP/HTTPS URLs pointing to raw text/CIDR lists (one per line).
+# Comments starting with '#' and empty lines are automatically ignored.
+# ==============================================================================
+
+https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-checked.txt

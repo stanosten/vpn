@@ -1,0 +1,31 @@
+# ==========================================
+# Network Nodes & Proxy / VPN Test List
+# Formats supported:
+#   - IP:PORT (e.g. 1.1.1.1:53)
+#   - http://IP:PORT or https://IP:PORT
+#   - socks5://IP:PORT or socks4://IP:PORT
+#   - ss://base64...#tag (Shadowsocks)
+#   - vless://uuid@host:port?...#tag (VLESS)
+#   - vmess://base64... (VMess)
+# ==========================================
+
+# Public DNS & Reliable Test Endpoints
+1.1.1.1:53
+8.8.8.8:53
+9.9.9.9:53
+1.0.0.1:443
+8.8.4.4:443
+
+# Common Web Endpoints (HTTP / HTTPS)
+104.16.132.229:443
+172.217.16.206:443
+151.101.1.140:80
+
+# Sample Proxy / Protocol Endpoints
+http://1.1.1.1:80
+https://1.0.0.1:443
+socks5://127.0.0.1:9050
+
+# Shadowsocks / VLESS Sample Format
+ss://YWVzLTI1Ni1nY206cGFzc3dvcmRAMTI3LjAuMC4xOjgzODg=#LocalSS
+vless://d342d11e-d424-4583-b36e-524ab1f0afa4@1.1.1.1:443?encryption=none&security=tls&type=tcp#CloudflareVLESS

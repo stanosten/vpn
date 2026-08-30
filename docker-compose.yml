@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  node-checker:
+    build: .
+    container_name: async_node_checker
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - LOG_LEVEL=INFO
+      - MAX_CONCURRENT_CHECKS=200
+      - TIMEOUT_SECONDS=5.0
+      - ENABLE_GEOIP=true
+      - AUTO_GIT_COMMIT=false
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs

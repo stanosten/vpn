@@ -1,0 +1,3 @@
+# Async IP & CIDR Network Checker
+# No external third-party dependencies required.
+# Pure Python Standard Library: asyncio, socket, ipaddress, urllib, time, re, argparse, pathlib.
