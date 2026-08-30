@@ -14,10 +14,17 @@
 │       └── checker.yml      # CI/CD воркфлоу для запуска по Cron и авто-коммита
 ├── checker.py               # Основной асинхронный скрипт сканирования (Python StdLib)
 ├── sources.txt              # Список URL источников со списками IP / CIDR
-├── working-ips.txt          # Сгенерированный список доступных IP (сортировка по RTT)
+├── 122                      # Сгенерированный список доступных IP (сортировка по RTT)
 ├── requirements.txt         # Файл зависимостей (только stdlib)
 └── README.md                # Документация проекта
 ```
+
+---
+
+## 🔗 Прямая ссылка на результат (Raw)
+
+После каждого выполнения чекера актуальный список рабочих IP доступен по постоянной прямой ссылке:
+👉 **[https://raw.githubusercontent.com/stanosten/vpn/refs/heads/main/122](https://raw.githubusercontent.com/stanosten/vpn/refs/heads/main/122)**
 
 ---
 
@@ -41,7 +48,7 @@
 
 4. **Экспорт и отчет:**
    - Ответившие адреса сортируются по возрастанию задержки (самые быстрые вверху).
-   - Результат сохраняется в `working-ips.txt`.
+   - Результат сохраняется в `122`.
    - Выводится подробная статистика и лог прогресса.
 
 ---
@@ -59,7 +66,7 @@
 python checker.py
 
 # Запуск с переопределением параметров (порт, пул, таймаут):
-python checker.py --port 443 --concurrency 400 --timeout 1.2 --sources sources.txt --output working-ips.txt
+python checker.py --port 443 --concurrency 400 --timeout 1.2 --sources sources.txt --output 122
 ```
 
 ---
@@ -83,7 +90,7 @@ https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main
 Проект полностью настроен для автономной периодической работы через GitHub Actions:
 - **Расписание:** запуск каждые 6 часов (`0 */6 * * *` UTC).
 - **Ручной запуск:** кнопка **Run workflow** (`workflow_dispatch`).
-- **Авто-коммит:** если список `working-ips.txt` изменился, GitHub Actions создаст коммит от имени `github-actions[bot]` и запушит обновления в репозиторий.
+- **Авто-коммит:** если список `122` изменился, GitHub Actions создаст коммит от имени `github-actions[bot]` и запушит обновления в репозиторий.
 
 ### ⚠️ Важно: Настройка прав (Read and Write Permissions)
 
@@ -100,4 +107,4 @@ https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main
 GitHub Repository ──► Settings ──► Actions ──► General ──► Workflow permissions ──► [x] Read and write permissions
 ```
 
-После этого GitHub Actions сможет автоматически обновлять `working-ips.txt` без необходимости настройки персональных токенов (PAT).
+После этого GitHub Actions сможет автоматически обновлять `122` без необходимости настройки персональных токенов (PAT).

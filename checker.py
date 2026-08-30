@@ -22,7 +22,8 @@ DEFAULT_TARGET_PORT: int = 443
 DEFAULT_CONCURRENCY_LIMIT: int = 400
 DEFAULT_TIMEOUT_SECONDS: float = 1.2
 DEFAULT_SOURCES_FILE: Path = Path("sources.txt")
-DEFAULT_OUTPUT_FILE: Path = Path("working-ips.txt")
+OUTPUT_FILE = "122"
+DEFAULT_OUTPUT_FILE: Path = Path(OUTPUT_FILE)
 DEFAULT_USER_AGENT: str = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 AsyncIPChecker/1.0"
